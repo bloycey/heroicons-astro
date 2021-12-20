@@ -83,11 +83,10 @@ async function buildIcons(package, style, format) {
   await Promise.all(
     icons.flatMap(async ({ componentName, svg }) => {
       let content = await transform[package](svg, componentName, format)
-      let types
-
-      if (package === 'react') {
-        types = `import * as React from 'react';\ndeclare function ${componentName}(props: React.ComponentProps<'svg'>): JSX.Element;\nexport default ${componentName};\n`
-      }
+      let types =
+        package === 'react'
+          ? `import * as React from 'react';\ndeclare function ${componentName}(props: React.ComponentProps<'svg'>): JSX.Element;\nexport default ${componentName};\n`
+          : `import { RenderFunction } from 'vue';\ndeclare const ${componentName}: RenderFunction;\nexport default ${componentName};\n`
 
       return [
         fs.writeFile(`${outDir}/${componentName}.js`, content, 'utf8'),
@@ -98,9 +97,7 @@ async function buildIcons(package, style, format) {
 
   await fs.writeFile(`${outDir}/index.js`, exportAll(icons, format), 'utf8')
 
-  if (package === 'react') {
-    await fs.writeFile(`${outDir}/index.d.ts`, exportAll(icons, 'esm', false), 'utf8')
-  }
+  await fs.writeFile(`${outDir}/index.d.ts`, exportAll(icons, 'esm', false), 'utf8')
 }
 
 function main(package) {
@@ -114,7 +111,9 @@ function main(package) {
         buildIcons(package, 'outline', 'esm'),
         buildIcons(package, 'outline', 'cjs'),
         fs.writeFile(`./${package}/outline/package.json`, `{"module": "./esm/index.js"}`, 'utf8'),
+        fs.writeFile(`./${package}/outline/esm/package.json`, `{"type": "module"}`, 'utf8'),
         fs.writeFile(`./${package}/solid/package.json`, `{"module": "./esm/index.js"}`, 'utf8'),
+        fs.writeFile(`./${package}/solid/esm/package.json`, `{"type": "module"}`, 'utf8'),
       ])
     )
     .then(() => console.log(`Finished building ${package} package.`))
