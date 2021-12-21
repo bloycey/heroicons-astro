@@ -1,0 +1,10 @@
+{
+  "name": "heroicons-astro",
+  "version": "1.0.1",
+  "description": "",
+  "files": [
+    "Heroicon.astro"
+  ],
+  "author": "",
+  "license": "ISC"
+}
