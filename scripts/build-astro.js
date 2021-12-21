@@ -2,11 +2,8 @@ const fs = require('fs').promises
 const camelcase = require('camelcase')
 const { promisify } = require('util')
 const rimraf = promisify(require('rimraf'))
-const svgr = require('@svgr/core').default
 
 async function buildIcons() {
-	// let outDir = `./astro/${type}`
-	// await fs.mkdir(outDir, { recursive: true })
 	const outlineIcons = await getIcons('outline');
 	const solidIcons = await getIcons('solid')
 	const allIcons = [...outlineIcons, ...solidIcons]
@@ -23,7 +20,6 @@ const { customClasses = "", iconStyle = "outline", iconCode="beaker"} = Astro.pr
 			iconFile += content;
 		})
 	)
-
 	fs.writeFile(`astro/Heroicon.astro`, iconFile, 'utf8')
 }
 
