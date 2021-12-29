@@ -18,7 +18,7 @@ import Icon from "heroicons-astro/Heroicon.astro";
 ---
 
 // PROPS
-// iconCode: Use the camel-case icon code from the official website: https://heroicons.com/
+// iconCode: Use the kebab-case icon code from the official website: https://heroicons.com/
 // iconStyle: Accepts either "outline" or "solid" (default is "outline")
 // customClasses: Accepts classnames as a string. E.g. "h-6 w-6"
 
